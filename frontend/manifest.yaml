@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  # lables aof deployment resource
+  labels:
+    app: frontend
+    tier: web
+    purpose: expense
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+      tier: web
+      purpose: expense
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: web
+        purpose: expense
+    spec:
+      containers:
+      - name: nginx
+        image: pavanreddy143/frontend:1.0.0
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend
+spec:
+  type: LoadBalancer
+  selector: # labels are used as selectors
+    app: frontend
+    tier: web
+    purpose: expense
+  ports:
+  - protocol: TCP
+    port: 80 # service port
+    targetPort: 80
