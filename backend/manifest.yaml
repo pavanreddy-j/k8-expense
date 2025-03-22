@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  # lables aof deployment resource
+  labels:
+    app: backend
+    tier: backend
+    purpose: expense
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+      tier: backend
+      purpose: expense
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: backend
+        purpose: expense
+    spec:
+      containers:
+      - name: nginx
+        image: pavanreddy143/backend:1.0.0
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend
+spec:
+  selector: # labels are used as selectors
+    app: backend
+    tier: backend
+    purpose: expense
+  ports:
+  - protocol: TCP
+    port: 8080 # service port
+    targetPort: 8080
